@@ -10,8 +10,9 @@ from functools import wraps
 import re
 import os
 from flask_migrate import Migrate
+from waitress import serve
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'secret_key_for_security'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///quotes.db' #бд 
@@ -547,14 +548,12 @@ def musarskoe():
     return render_template('musarskoe.html')
 
 @app.route('/favicon.ico')
-def favicon_ico():
-    return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/x-icon')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
 
-@app.route('/favicon.png')
-def favicon_png():
-    return send_from_directory(app.static_folder, 'favicon.png', mimetype='image/png')
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all() 
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
+    serve(app, host='0.0.0.0', port=8000)
