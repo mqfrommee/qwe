@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Правила</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"> Блатные цитаты</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}" class="active">Главная</a>
+            <a href="{{ url_for('profile') }}">Профиль</a>
+            <a href="{{ url_for('all_quotes') }}">Все цитаты</a>
+            {% if current_user.role in ['admin', 'editor'] %}
+                <a href="{{ url_for('add_quote') }}">Добавить цитату</a>
+                <a href="{{ url_for('add_category') }}">Добавить категорию</a>
+            {% endif %}
+
+            {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('role_requests') }}">Заявки на роль</a>
+                <a href="{{ url_for('admin') }}">Администрирование</a>
+            {% endif %}
+
+            {% if current_user.role == 'user' %}
+                <a href="{{ url_for('request_role') }}">Смена роли</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main>
+        <section id="contact" class="content-section">
+            <h1>Правила</h1>
+            
+            <div class="contact-container">
+                <div class="contact-item">
+                    <h2>Правило 1</h2>
+                    <p>Правил нет</p>
+                </div>
+                
+                <div class="contact-item">
+                    <h2>Правило 2</h2>
+                    <p>Смотреть правило 1</p>
+                </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

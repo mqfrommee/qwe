@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_quote.css') }}">
+    <title>Добавить цитату</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Блатные цитаты</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="active">Главная</a>
+                {% if session.get('user_role') == 'admin' or session.get('user_role') == 'editor' %}
+                <a href="{{ url_for('add_quote') }}"> Добавить цитату</a>
+                {% endif %}
+                {% if session.get('user_role') == 'admin' %}
+                <a href="{{ url_for('add_category') }}"> Добавить категорию</a>
+                <a href="{{ url_for('role_requests') }}">Заявки на роль</a>
+                {% endif %}
+                {% if session.get('user_role') == 'user'%}
+                <a href="{{ url_for('request_role') }}">Смена роли</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Выход</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Добавить цитату</h1>
+
+        <form method="POST" action="{{ url_for('add_quote') }}">
+            <label for="content">Текст цитаты:</label><br>
+            <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
+        
+            <label for="author">Автор цитаты:</label><br>
+            <input type="text" id="author" name="author" required><br><br>
+        
+            <label for="category">Категория:</label><br>
+            <select id="category" name="category" required>
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select><br><br>
+        
+            <button type="submit" class="button">Добавить</button>
+        </form>        
+
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <ul>
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

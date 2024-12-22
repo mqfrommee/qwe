@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <title>Запрос на роль</title>
+</head>
+<body>
+    <h1>Запрос на получение роли</h1>
+    <p>Вы можете запросить роль редактора, чтобы публиковать цитаты.</p>
+    <form method="post" action="{{ url_for('request_role') }}">
+        <button type="submit">Отправить запрос</button>
+    </form>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

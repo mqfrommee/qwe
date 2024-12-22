@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Случайная цитата</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Цитаты</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}">Главная</a>
+            <a href="{{ url_for('random_quote') }}" class="active">Случайная цитата</a>
+        </div>
+    </nav>
+
+    <main>
+        <h1>Случайная цитата</h1>
+
+        {% if quote %}
+        <blockquote class="quote-card">
+            <p class="quote-text">“{{ quote.text }}”</p>
+            <footer class="quote-author">— {{ quote.author }}</footer>
+        </blockquote>
+        {% else %}
+        <p>Цитата не найдена.</p>
+        {% endif %}
+
+        <div class="section-header">
+            <a href="{{ url_for('home') }}" class="random-button">Вернуться на главную</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

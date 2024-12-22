@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Блатные цитаты</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="active">Главная</a>
+                {% if session.get('user_role') == 'admin' or session.get('user_role') == 'editor' %}
+                <a href="{{ url_for('add_quote') }}">Добавить цитату</a>
+                {% endif %}
+                {% if session.get('user_role') == 'admin' %}
+                <a href="{{ url_for('add_category') }}">тест</a>
+                <a href="{{ url_for('role_requests') }}">Заявки на роль</a>
+                {% endif %}
+                {% if session.get('user_role') == 'user'%}
+                <a href="{{ url_for('request_role') }}">Смена роли</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Выход</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="profile-header">
+            <h1>Профиль: {{ user.username }}</h1>
+            <p><strong>Дата регистрации:</strong> {{ user.date_registered.strftime('%d.%m.%Y %H:%M:%S') }}
+                ({{ (datetime.utcnow() - user.date_registered).days }} дней на форуме)</p>
+            <p><strong>Всего опубликованных цитат:</strong> {{ user_quotes|length }}</p>
+            <p><strong>Всего понравившихся цитат:</strong> {{ liked_quotes|length }}</p>
+        </div>
+
+        <section class="quotes-section">
+            <h2>Понравившиеся цитаты</h2>
+            {% if liked_quotes %}
+                <ul class="quotes-list">
+                    {% for quote in liked_quotes %}
+                        <li class="quote-card">
+                            <p class="quote-text">{{ quote.text }}</p>
+                            <p class="quote-author"><strong>Автор:</strong> {{ quote.author }}</p>
+                            <p><strong>Категория:</strong> {{ quote.category.name }}</p>
+                            <a class="more-link" href="{{ url_for('view_quote', quote_id=quote.id) }}">Просмотреть</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>У вас ещё нет понравившихся цитат.</p>
+            {% endif %}
+        </section>
+
+        {% if session.get('user_role') == 'admin' or session.get('user_role') == 'editor' %}
+        <section class="quotes-section">
+            <h2>Ваши цитаты</h2>
+            {% if user_quotes %}
+                <ul class="quotes-list">
+                    {% for quote in user_quotes %}
+                        <li class="quote-card">
+                            <p class="quote-text">{{ quote.text }}</p>
+                            <p class="quote-author"><strong>Автор:</strong> {{ quote.author }}</p>
+                            <p><strong>Категория:</strong> {{ quote.category.name }}</p>
+                            <a class="active" href="{{ url_for('view_quote', quote_id=quote.id) }}">Просмотреть</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>Вы ещё не добавили цитат.</p>
+            {% endif %}
+        </section>
+        {% endif %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты поиска</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Блатные цитаты</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}">Главная</a>
+                <a href="{{ url_for('all_quotes') }}">Все цитаты</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="search-results">
+            <h1>Результаты поиска</h1>
+            <p>Вы искали: "{{ query }}"</p>
+
+            {% if results %}
+                <div class="quotes-grid">
+                    {% for quote in results %}
+                    <div class="quote-card">
+                        <div class="quote-text">"{{ quote.text }}"</div>
+                        <div class="quote-author">- {{ quote.author }}</div>
+                        <div class="quote-meta">
+                            <span class="likes">❤ {{ quote.likes }}</span>
+                            <a href="{{ url_for('view_quote', quote_id=quote.id) }}" class="more-link">Подробнее →</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Ничего не найдено. Попробуйте другой запрос.</p>
+            {% endif %}
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="#">Правила</a>
+                <a href="#">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

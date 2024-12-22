@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход / Регистрация</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/login.css">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <!-- Подключаем jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body style="display:flex; align-items:center; justify-content:center;">
+<div class="login-page">
+  <div class="form">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+            <div class="flash-message {{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form class="register-form" method="POST" action="{{ url_for('register') }}">
+        <h2><i class="fas fa-lock"></i> Регистрация </h2>
+        <input type="text" placeholder="Имя пользователя (не менее 6 символов)" id="username" name="username" pattern=".{6,}" required><br>
+        <input type="email" placeholder="Электронная почта" id="email" name="email" required><br>
+        <input type="password" placeholder="Пароль" id="password" name="password"
+               pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,12}$" required><br>
+        <input type="password" placeholder="Подтверждение пароля" id="confirm_password" name="confirm_password" required><br>
+        <button type="submit">Создать аккаунт</button>
+        <p class="message">Уже зарегистрированы? <a href="#" id="show-login-form">Войти</a></p>
+    </form>
+    
+    <form class="login-form" method="POST" action="{{ url_for('login') }}">
+      <h2><i class="fas fa-lock"></i> Вход</h2>
+      <input type="text" placeholder="Имя пользователя" id="login-username" name="username" required><br>
+      <input type="password" placeholder="Пароль" id="login-password" name="password" required><br>
+      <button type="submit">Войти</button>
+      <p class="message">Не зарегистрированы? <a href="#" id="show-register-form">Создать аккаунт</a></p>
+    </form>
+  </div>
+</div>
+<script>
+    // Проверка паролей перед отправкой формы регистрации
+    document.querySelector('.register-form').addEventListener('submit', function(e) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm_password').value;
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert('Пароли не совпадают!');
+        }
+    });
+
+    // Переключение между формами
+    $('#show-register-form').click(function(e) {
+        e.preventDefault();
+        $('.login-form').hide();
+        $('.register-form').show();
+    });
+    $('#show-login-form').click(function(e) {
+        e.preventDefault();
+        $('.register-form').hide();
+        $('.login-form').show();
+    });
+</script>
+</body>
+</html>

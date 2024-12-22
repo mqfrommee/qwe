@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все цитаты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Блатные цитаты</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}">Главная</a>
+                <a href="{{ url_for('profile') }}">Профиль</a>
+                <a href="{{ url_for('all_quotes') }}" class="active">Все цитаты</a>
+                <a href="{{ url_for('logout') }}">Выход</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="quotes-section">
+            <div class="section-header">
+                <h2>Все цитаты</h2>
+                <a href="{{ url_for('random_quote') }}" class="random-button">Случайная цитата</a>
+            </div>
+
+            <div class="quotes-grid">
+                {% if quotes %}
+                    {% for quote in quotes %}
+                    <div class="quote-card">
+                        <div class="quote-text">"{{ quote.text }}"</div>
+                        <div class="quote-author">- {{ quote.author }}</div>
+                        <div class="quote-meta">
+                            <span class="likes">❤ {{ quote.likes }}</span>
+                            <a href="{{ url_for('view_quote', quote_id=quote.id) }}" class="more-link">Подробнее →</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Цитаты отсутствуют.</p>
+                {% endif %}
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

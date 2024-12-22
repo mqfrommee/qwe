@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цитата</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='quote.css') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Цитаты</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="active">Главная</a>
+                <a href="{{ url_for('profile') }}">Профиль</a>
+                <a href="{{ url_for('all_quotes') }}">Все цитаты</a>
+                {% if current_user.role in ['admin', 'editor'] %}
+                    <a href="{{ url_for('add_quote') }}">Добавить цитату</a>
+                    <a href="{{ url_for('add_category') }}">Добавить категорию</a>
+                {% endif %}
+
+                {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('role_requests') }}">Заявки на роль</a>
+                    <a href="{{ url_for('admin') }}">Администрирование</a>
+                {% endif %}
+
+                {% if current_user.role == 'user' %}
+                    <a href="{{ url_for('request_role') }}">Смена роли</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+    
+    <main>
+        
+        <section class="quotes-section">
+            <div class="quote-card">
+                <div class="quote-text">"{{ quote.text }}"</div>
+                <div class="quote-author">- {{ quote.author }}</div>
+                <div class="quote-meta">
+                        <span class="category">Категория: {{ quote.category.name }}</span><br>
+                        <span class="views">Просмотры: {{ quote.views }}</span>
+                </div>
+                <div class="like-section">
+                    <form action="{{ url_for('view_quote', quote_id=quote.id) }}" method="post">
+                        <button type="submit" class="like-heart" title="Лайкнуть">❤</button>
+                    </form>
+                    <span class="likes-count">{{ quote.likes }}</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

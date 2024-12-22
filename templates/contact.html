@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Контакты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo"> цитаты</div>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}" class="active">Главная</a>
+            <a href="{{ url_for('profile') }}">Профиль</a>
+            <a href="{{ url_for('all_quotes') }}">Все цитаты</a>
+            {% if current_user.role in ['admin', 'editor'] %}
+                <a href="{{ url_for('add_quote') }}">Добавить цитату</a>
+                <a href="{{ url_for('add_category') }}">Добавить категорию</a>
+            {% endif %}
+
+            {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('role_requests') }}">Заявки на роль</a>
+                <a href="{{ url_for('admin') }}">Администрирование</a>
+            {% endif %}
+
+            {% if current_user.role == 'user' %}
+                <a href="{{ url_for('request_role') }}">Смена роли</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main>
+        <section id="contact" class="content-section">
+            <h1>Контактная информация</h1>
+            
+            <div class="contact-container">
+                <div class="contact-item">
+                    <h2>Телефон</h2>
+                    <p>8 (495) 963-11-02</p>
+                </div>
+                
+                <div class="contact-item">
+                    <h2>Телеграм</h2>
+                    <p>@a345cm</p>
+                </div>
+
+                <div class="contact-item">
+                    <h2>Электронная почта</h2>
+                    <p>yotidef799@owube.com</p>
+                </div>
+
+                <div class="contact-item">
+                    <h2>Адрес</h2>
+                    <p>ул. Кузнецкий Мост, 22, Москва Россия</p>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <h2>Наш офис</h2>
+                <iframe width="100%" height="400" frameborder="0" scrolling="no"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=37.620614%2C55.759258%2C37.629712%2C55.764104&layer=mapnik&marker=55.761831%2C37.624813"></iframe>
+            </div>
+            
+            
+            
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

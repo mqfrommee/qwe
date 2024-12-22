@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='role.css') }}">
+    <title>Запросы на роли</title>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">Блатные цитаты</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="active">Главная</a>
+                {% if session.get('user_role') == 'admin' %}
+                <a href="{{ url_for('role_requests') }}">Запросы на роли</a>
+                {% endif %}
+                <a href="{{ url_for('logout') }}">Выход</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Запросы на получение роли</h1>
+        <table class="requests-table">
+            <thead>
+                <tr>
+                    <th>Имя пользователя</th>
+                    <th>Запрашиваемая роль</th>
+                    <th>Дата заявки</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                <tr>
+                    <td>{{ request.user.username }}</td>
+                    <td>{{ request.requested_role }}</td>
+                    <td>{{ request.created_at }}</td>
+                    <td>
+                        <form action="{{ url_for('approve_request', request_id=request.id) }}" method="post" class="action-form">
+                            <button type="submit" class="approve-button">Одобрить</button>
+                        </form>
+                        <form action="{{ url_for('reject_request', request_id=request.id) }}" method="post" class="action-form">
+                            <button type="submit" class="reject-button">Отклонить</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

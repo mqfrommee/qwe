@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Сайт с популярными блатными цитатами">
+    <meta name="keywords" content="цитаты, блатные цитаты, авторы, популярные цитаты">
+    <title>Блатные цитаты</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo"> цитаты</div>
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}" class="active">Главная</a>
+                <a href="{{ url_for('profile') }}">Профиль</a>
+                <a href="{{ url_for('all_quotes') }}">Все цитаты</a>
+                {% if current_user.role in ['admin', 'editor'] %}
+                    <a href="{{ url_for('add_quote') }}">Добавить цитату</a>
+                    <a href="{{ url_for('add_category') }}">Добавить категорию</a>
+                {% endif %}
+
+                {% if current_user.role == 'admin' %}
+                    <a href="{{ url_for('role_requests') }}">Заявки на роль</a>
+                    <a href="{{ url_for('admin') }}">Администрирование</a>
+                {% endif %}
+
+                {% if current_user.role == 'user' %}
+                    <a href="{{ url_for('request_role') }}">Смена роли</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- Отладочная информация для проверки роли пользователя -->
+    <p>Роль пользователя: {{ current_user.role }}</p>
+
+    <main>
+        <!-- Поиск цитат -->
+        <section class="search-section">
+            <div class="search-container">
+                <form action="{{ url_for('search') }}" method="get">
+                    <input type="text" name="query" placeholder="Поиск по цитатам..." class="search-input">
+                    <button type="submit" class="search-button">Найти</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Популярные цитаты -->
+        <section class="quotes-section">
+            <div class="section-header">
+                <h2>Популярные цитаты</h2>
+                <a href="{{ url_for('random_quote') }}" class="random-button">Случайная цитата</a>
+            </div>
+            
+            {% if popular_quotes %}
+                <div class="quotes-grid">
+                    {% for quote in popular_quotes %}
+                        <div class="quote-card">
+                            <div class="quote-text">"{{ quote.text }}"</div>
+                            <div class="quote-author">- {{ quote.author }}</div>
+                            <div class="quote-meta">
+                                <span class="likes">❤ {{ quote.likes }}</span>
+                                <a href="{{ url_for('view_quote', quote_id=quote.id) }}" class="more-link">Подробнее →</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Нет популярных цитат для отображения.</p>
+            {% endif %}
+        </section>
+
+        <!-- Последние цитаты -->
+        <section class="latest-quotes-section">
+            <div class="section-header">
+                <h2>Последние цитаты</h2>
+            </div>
+            <div class="quotes-grid">
+                {% for quote in latest_quotes %}
+                    <div class="quote-card">
+                        <div class="quote-text">"{{ quote.text }}"</div>
+                        <div class="quote-author">- {{ quote.author }}</div>
+                        <div class="quote-meta">
+                            <span class="likes">❤ {{ quote.likes }}</span>
+                            <a href="{{ url_for('view_quote', quote_id=quote.id) }}" class="more-link">Подробнее →</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Рекомендуемые цитаты -->
+        <section class="recommended-quotes-section">
+            <div class="section-header">
+                <h2>Рекомендуемые цитаты</h2>
+            </div>
+            <div class="quotes-grid">
+                {% for quote in recommended_quotes %}
+                    <div class="quote-card">
+                        <div class="quote-text">"{{ quote.text }}"</div>
+                        <div class="quote-author">- {{ quote.author }}</div>
+                        <div class="quote-meta">
+                            <span class="likes">❤ {{ quote.likes }}</span>
+                            <a href="{{ url_for('view_quote', quote_id=quote.id) }}" class="more-link">Подробнее →</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Категории -->
+        <!-- Категории -->
+            <section class="categories-section">
+                <h2>Категории</h2>
+            <div class="categories-grid">
+                {% for category, quotes_count in categories %}
+                    <a href="{{ url_for('category', category_name=category.name) }}" class="category-card">
+                    <span class="category-name">{{ category.name }}</span>
+                    <span class="category-count">{{ quotes_count }}</span>
+                    </a>
+                {% endfor %}
+             </div>
+            </section>
+
+    </main>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 цитаты</p>
+            <div class="footer-links">
+                <a href="info_project">О проекте</a>
+                <a href="contact">Контакты</a>
+                <a href="rules">Правила</a>
+                <a href="musarskoe">Политика конфиденциальности</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

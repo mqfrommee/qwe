@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_quote.css') }}">
+    <title>Добавить категорию</title>
+</head>
+<body>
+    <h1>Добавить новую категорию</h1>
+
+    <form method="POST" action="{{ url_for('add_category') }}">
+        <label for="category_name">Название категории:</label>
+        <input type="text" id="category_name" name="category_name" required>
+        <button type="submit">Добавить</button>
+    </form>
+       
+
+    <a href="{{ url_for('home') }}">Вернуться на главную</a>
+</body>
+</html>
