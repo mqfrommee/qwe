@@ -31,6 +31,28 @@
       </div>
   </nav>
 
+  <div id="modal-nav" class="modal hidden">
+    <div class="modal-content">
+        <button class="close-btn">&times;</button>
+        <nav class="modal-nav">
+            <a href="{{ url_for('home') }}">Главная</a>
+            <a href="{{ url_for('profile') }}">Профиль</a>
+            <a href="{{ url_for('all_quotes') }}">Все цитаты</a>
+            {% if current_user.role in ['admin', 'editor'] %}
+                <a href="{{ url_for('add_quote') }}">Добавить цитату</a>
+                <a href="{{ url_for('add_category') }}">Добавить категорию</a>
+            {% endif %}
+            {% if current_user.role == 'admin' %}
+                <a href="{{ url_for('role_requests') }}">Заявки на роль</a>
+                <a href="{{ url_for('admin') }}">Администрирование</a>
+            {% endif %}
+            {% if current_user.role == 'user' %}
+                <a href="{{ url_for('request_role') }}">Смена роли</a>
+            {% endif %}
+        </nav>
+    </div>
+</div>
+
     <!-- Main Content -->
     <main>
         <section id="home" class="content-section">
@@ -58,5 +80,8 @@
             <a href="musarskoe">Политика конфиденциальности</a>
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/modal_home.js') }}"></script>
+
 </body>
 </html>

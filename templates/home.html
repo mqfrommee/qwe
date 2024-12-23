@@ -9,31 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
-    <style>
-        .mobile-error {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            font-family: 'Inter', sans-serif;
-            color: red;
-            background-color: #fff4f4;
-            border: 1px solid red;
-            margin: 20px;
-            border-radius: 5px;
-        }
-        .hidden {
-            display: none;
-        }
-        .visible {
-            display: block;
-        }
-    </style>
 </head>
 <body>
-    <div id="mobile-error" class="mobile-error hidden">
-        <h1>Ошибка</h1>
-        <p>Сайт еще не разработан для вашего устройства. Пожалуйста, зайдите с компьютера.</p>
-    </div>
     <header>
         <nav class="navbar">
             <div class="logo">цитаты</div>
@@ -189,23 +166,8 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-            const mobileError = document.getElementById("mobile-error");
-            const mainContent = document.getElementById("main-content");
-
-            if (/android|iPad|iPhone|iPod/i.test(userAgent)) {
-                // Показываем сообщение об ошибке
-                mobileError.classList.remove("hidden");
-                mobileError.classList.add("visible");
-
-                // Скрываем основной контент
-                mainContent.classList.add("hidden");
-            }
-        });
-    </script>
-    
     <script src="{{ url_for('static', filename='js/modal_home.js') }}"></script>
+
 </body>
 </html>
+ 
